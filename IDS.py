@@ -3,6 +3,7 @@ from geopy.distance import geodesic
 import random
 class IDS:
 
+
     def __init__(self):
         pass
 
@@ -24,6 +25,21 @@ class IDS:
         speed_reduction = True
         heart_rate = True
         air_bag = True
+        total_messages = 0
+        genuine_messages = 0
+        fake_messages = 0
+        with open('total_messages.txt', 'r') as file:
+            total_messages = file.read()
+            total_messages = int(total_messages)
+
+        with open('genuine_messages.txt', 'r') as file:
+            genuine_messages = file.read()
+            genuine_messages = int(genuine_messages)
+
+        with open('fake_messages.txt', 'r') as file:
+            fake_messages = file.read()
+            fake_messages = int(fake_messages)
+
 
         data_type = data.get_content().get_tlv_type()
 
@@ -31,12 +47,14 @@ class IDS:
             vehicle_movement =  self.check_vehicle_movement(data, node)
 
         if data_type in [131, 132, 133, 134]:
-            n = 0
+            #n = random.randint(20,50)
+            n=30
             print(f"speed reduction percentage : {n}")
             speed_reduction = self.check_speed_reduction( data, dummy_data, n, node)
 
-        if data_type in [128, 129, 130, 137]:
-            n = random.randint(60,90)
+        if data_type in [128, 129, 130, 135]:
+            #n = random.randint(60,90)
+            n=95
             print(f"speed reduction percentage : {n}")
             speed_reduction = self.check_speed_reduction(data, dummy_data, n, node)
 
@@ -46,8 +64,24 @@ class IDS:
         if data_type == 129:
             air_bag = self.check_airbag_status(data)
 
-        return vehicle_movement and speed_reduction and heart_rate and air_bag
+        genuine_message = vehicle_movement and speed_reduction and heart_rate and air_bag
 
+        if genuine_message is True:
+            genuine_messages = genuine_messages + 1
+        else:
+            fake_messages = fake_messages + 1
+        total_messages = total_messages + 1
+        print(f"\ntotal messages: {total_messages}\t genuine messages : {genuine_messages}\t fake messages : {fake_messages}")
+
+
+        with open('total_messages.txt', 'w') as file:
+            file.write(str(total_messages))
+        with open('genuine_messages.txt', 'w') as file:
+            file.write(str(genuine_messages))
+        with open('fake_messages.txt', 'w') as file:
+            file.write(str(fake_messages))
+
+        return genuine_message
 
     def check_vehicle_movement(self, data, node):
         """
@@ -74,7 +108,7 @@ class IDS:
 
 
                 #vehicle should have moved atlest 100 meters
-                dis = geodesic(gps, old_gps).miles
+                dis = geodesic(gps, old_gps).m
                 if  dis< 0.031:
                     print(f"Invalid gps ---->  {dis} is less than 100 meters")
                     return False

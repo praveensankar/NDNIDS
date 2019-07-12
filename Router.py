@@ -80,7 +80,7 @@ class Router:
 
 
 id = random.randint(1,100000)
-port = 3001
+port = 3020
 name = "test router"
 ip_address = "127.0.0.1"
 

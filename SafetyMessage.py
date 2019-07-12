@@ -51,9 +51,10 @@ class SafetyMessageTLV:
     "SVA" : 132,
     "CCW" : 133,
     "CVW" : 134,
-    "CRN" : 135,
-    "CL" : 136,
-    "EVA" : 137
+    "EVA" : 135,
+    "CRN" : 136,
+    "CL" : 137
+
     }
 
 

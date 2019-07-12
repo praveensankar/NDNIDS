@@ -218,11 +218,14 @@ class Node:
         """
         this method creates the faces for the node. Then all the faces will be added to the node.
         By default 2 - number of faces will be created.
+
         Todo: Create a function which can customize the create_faces for the nodes
         """
         # faces will have ids 1, 2, 3, 4
         # names of the faces will be - face1, face2, face3, face4
-        n = 2
+
+        # 10 faces have been created
+        n = 11
         ids = [x for x in range(1,n+1)]
         names = ["face"+str(id) for id in ids]
 
@@ -370,10 +373,13 @@ class Node:
         print("genuine message")
         print("*" * 100)
         faces = self.get_faces()
+
         for face in faces:
+
             if face.get_value() == incoming_face.get_value():
                 continue
             else:
+                time.sleep(0.1)
                 self.send_data(face, data)
 
     def attach_IDS(self, ids):

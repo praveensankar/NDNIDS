@@ -1,5 +1,5 @@
 """
-This producer sends safety message to all the consumers
+This producer sends no_of_safety messages continously to all the consumers
 """
 
 from Core import Core
@@ -44,8 +44,11 @@ def listen():
 
 
 
+# send 25 safety messages
+no_of_messages = 300
+
 safety_message_tlvs = SafetyMessageTLV.tlvs
-safety_messages = [ "EEBL", "PCN","RHCN","RFN","SVA","CCW" ,"CVW","CRN" ,"CL" ,"EVA" ]
+safety_messages = [ "EEBL", "PCN","RHCN","RFN","SVA","CCW" ,"CVW" ,"EVA" ]
 key = Keys()
 private_key=key.get_private_key()
 public_key=key.get_public_key()
@@ -74,10 +77,15 @@ th = threading.Thread(target=listen, args=())
 th.daemon = True
 th.start()
 
-while True:
-    type = int(input("Please enter \n1 to send EEBL\t 2 to send PCN\t 3 to send RHCN"
-                    "\t4 to send RFN\t 5 to send SVA\t 6 to send CCW\n 7 to send CVW"
-                    "\t8 to send CRN\t 9 to send CL\t 10 to send EVA\t 11 to produce normal data \t : "))
+
+for i in range(no_of_messages):
+
+    #type = int(input("Please enter \n1 to send EEBL\t 2 to send PCN\t 3 to send RHCN"
+    #               "\t4 to send RFN\t 5 to send SVA\t 6 to send CCW\n 7 to send CVW"
+    #               "\t8 to send CRN\t 9 to send CL\t 10 to send EVA\t 11 to produce normal data \t : "))
+
+    #send sva
+    type = 8
     if type == 11:
         name = input("Please enter name for the message : ")
         content = input(" please enter the content : ")
